@@ -1,0 +1,166 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dropdown Banking</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <nav>
+        <ul>
+        <li><a href="#">Home</a></li>
+        <li>
+            <a href="#">Account Information</a>
+            <ul class="dropdown">
+                <li><a href="#"onclick="showForm('accountCreation')">Create Account</a></li>
+                <li><a href="#" onclick="showForm('accountDetails')">Show Details</a></li>
+            </ul>
+        </li>
+        <li>
+            <a href="#">Transaction Details</a>
+            <ul class="dropdown">
+                <li><a href="#" onclick="showForm('accountDeposit')">Deposit</a></li>
+                <li><a href="#" onclick="showForm('accountWithdraw')">Withdraw</a></li>
+            </ul>
+        </li>
+        <li><a href="#">Contact Us</a></li>
+        </ul>
+  </nav>
+  <form id="accountCreation">
+    <label >Name:</label>
+    <input type="text" id="name" placeholder="enter your name" required>
+    <br><br>
+    <label >Address:</label>
+    <input type="text" id="address" placeholder="enter your address" required>
+    <br><br>
+    <label > Contact:</label>
+    <input type="text " id="contact" placeholder="enter your number" required>
+    <br><br>
+    <button type="button" onclick="createAccount()">Create Account</button>
+  </form>
+        
+  <form id="accountDetails">
+    <label >Account Number:</label>
+    <input type="number" id="accNumber" placeholder="enter your account number" required>
+    <br><br>
+    <button type="button" onclick="accountDetails()">Show Details</button>
+  </form>
+  <form id="accountDeposit">
+    <label for="accountNumberDeposit">Account Number:</label>
+    <input type="number" id="accountNumberDeposit" required>
+    <br><br>
+    <label for="depositAmount">Amount:</label>
+    <input type="number" id="depositAmount" placeholder="enter amount to deposit" required>
+    <br><br>
+    <button type="button" onclick="accountDeposit()">Deposit</button>
+  </form>
+    
+  <form id="accountWithdraw">
+    <label >Account Number:</label>
+    <input type="number" id="accWithdraw" placeholder="enter your account number" required>
+    <br><br>
+    <label >Amount:</label>
+    <input type="number" id="withdrawAmount" placeholder="enter amount to withdraw" required>
+    <br><br>
+    <button type="button" onclick="accountWithdraw()">Withdraw</button>
+  </form>
+
+  
+  <script type="text/javascript">
+    
+    var balance=0;
+    var accountNumber=1000;
+    var person=[];
+    function showForm(form) {
+      document.getElementById("accountCreation").style.display = "none";
+      document.getElementById("accountDetails").style.display = "none";
+      document.getElementById("accountDeposit").style.display = "none";
+      document.getElementById("accountWithdraw").style.display = "none";
+      document.getElementById(form).style.display = "flex";
+    }
+
+     function createAccount() {
+      var customer = {};
+      customer.name=document.getElementById("name").value;
+      customer.address=document.getElementById("address").value;
+      customer.contact=document.getElementById("contact").value;   
+      customer.accountNumber = accountNumber + 1;
+      customer.balance = balance;   
+      person.push(customer);
+      accountNumber++;
+      alert("Account successfully created !! Your account number is"+accountNumber );
+     }
+     function accountDetails() {
+      var acNo=Number(document.getElementById("accNumber").value);
+      var n;
+      var found=false;
+      for (var i = 0; i < person.length; i++) {
+        if(person[i].accountNumber==acNo){
+         found=true;
+          n=i;
+        }
+      }
+      if (found) {
+        alert(" Your name is Name " + person[n].name + "\n your address  is " + person[n].address + "\n your balance is " + person[n].balance);
+      } 
+      else{
+        alert("Account not found !! please create your account");
+      }
+     }
+     function accountDeposit() {
+      var acNo = Number(document.getElementById("accountNumberDeposit").value);
+      var found = false;
+      var n;
+
+      for (var i = 0; i < person.length; i++) {
+        if (person[i].accountNumber == acNo) {
+          found = true;
+          n = i;
+        }
+      }
+      if (found) {
+        var amount = Number(document.getElementById("depositAmount").value);
+        person[n].balance = person[n].balance + amount;
+        alert("Successfully deposited !! Your new balance is " + person[n].balance);
+      } else {
+        alert("Account not found!! please create your account first");
+      }
+
+      document.getElementById("accountNumberDeposit").value = "";
+      document.getElementById("depositAmount").value = "";
+    }
+    
+    function accountWithdraw() {
+      var acNo = Number(document.getElementById("accWithdraw").value);
+      var found = false;
+      var n;
+
+      for (var i = 0; i < person.length; i++) {
+        if (person[i].accountNumber == acNo) {
+          found = true;
+          n = i;
+        }
+      }
+      if (found) {
+        var amt = Number(document.getElementById("withdrawAmount").value);
+        if (person[n].balance < amt) {
+          alert("Your accound doesn't have enough balance!");
+        }
+        else {
+          person[n].balance = person[n].balance - amt;
+          alert("successfully withdrawn !! Your new balance is" + person[n].balance);
+        }
+      }
+      else {
+        alert("Account not found!!!");
+      }
+
+      document.getElementById("accountWithdraw").value = "";
+      document.getElementById("withdrawAmount").value = "";
+    }
+
+  </script>
+    </body>
+    </html>
+    
